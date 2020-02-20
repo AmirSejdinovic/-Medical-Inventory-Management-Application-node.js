@@ -30,11 +30,6 @@ app.use(express.static('public'));
 //Teling the expres that we use body parser package
 app.use(bodyParser.urlencoded({extended:false}));
 
-//Creating the route for meds and rendering the template 
-app.get('/meds',(req,res)=>{
-  //Rednering the mustache template from views folder
-    res.render('meds');
-} );
 
 //Rout from form 
 app.get('/add', (req,res)=>{
@@ -73,6 +68,34 @@ app.post('/meds/add', (req,res)=>{
   ;
   
 })
+
+//Creating the route for meds and rendering the template 
+app.get('/meds',(req,res)=>{
+
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'medical1',
+    password: 'root',
+    port: 5432,
+
+});
+//Conecting to the database with this aboce credentials. In this i put the promise
+client.connect()
+.then(()=>{
+  //Query for selecting the all data from meds row
+  return client.query('SELECT * FROM meds');
+
+}).then((results)=>{
+  console.log('results', results);
+  //Rednering the mustache template from views folder
+  res.render('meds', results);
+  
+})
+;
+  
+} );
+
 
 //Create that app listen the port
 app.listen(5001, ()=>{
