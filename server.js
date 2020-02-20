@@ -120,10 +120,64 @@ client.connect()
 }).then((results)=>{
      res.redirect('/meds');
   
-})
-;
-  
+});
    
+});
+//Creating the route for meds edit page
+app.get('/meds/edit/:id', (req,res)=>{
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'medical1',
+    password: 'root',
+    port: 5432,
+
+});
+//Conecting to the database with this aboce credentials. In this i put the promise
+client.connect()
+.then(()=>{
+  //SQL query for delete items
+    const sql = 'SELECT * FROM meds WHERE mid=$1';
+    //Here we catch id from request
+    const params = [req.params.id];
+    //Here we pase the query into database
+    return client.query(sql,params);
+
+
+}).then((results)=>{
+     res.render('meds-edit',{med:results.rows[0]});
+     console.log('results',results);
+  
+});
+});
+
+app.post('/meds/edit/:id',(req,res)=>{
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'medical1',
+    password: 'root',
+    port: 5432,
+
+});
+//Conecting to the database with this aboce credentials. In this i put the promise
+client.connect()
+.then(()=>{
+  //SQL query for delete items
+    const sql = 'UPDATE meds SET name=$1, count=$2,brand=$3 WHERE mid=$4';
+    //Here we catch id from request
+    const params = [req.body.name,req.body.count,req.body.brand,req.params.id];
+
+    //Here we pase the query into database
+    return client.query(sql,params);
+
+
+}).then((results)=>{
+     
+     console.log('results',results);
+     res.redirect('/meds');
+  
+});
 });
 
 
