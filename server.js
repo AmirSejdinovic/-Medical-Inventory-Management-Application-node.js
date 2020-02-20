@@ -96,6 +96,36 @@ client.connect()
   
 } );
 
+app.post('/meds/delete/:id', (req,res)=>{
+
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'medical1',
+    password: 'root',
+    port: 5432,
+
+});
+//Conecting to the database with this aboce credentials. In this i put the promise
+client.connect()
+.then(()=>{
+  //SQL query for delete items
+    const sql = 'DELETE FROM meds WHERE mid= $1';
+    //Here we catch id from request
+    const params = [req.params.id];
+    //Here we pase the query into database
+    return client.query(sql,params);
+
+
+}).then((results)=>{
+     res.redirect('/meds');
+  
+})
+;
+  
+   
+});
+
 
 //Create that app listen the port
 app.listen(5001, ()=>{
