@@ -69,8 +69,7 @@ app.post('/meds/add', (req,res)=>{
   
 })
 //Dashboard route
-app.get('/dashboard',(res,req)=>{
-   //Conecting to the database
+app.get('/dashboard',(req,res)=>{
   const client = new Client({
     user: 'postgres',
     host: 'localhost',
@@ -79,15 +78,18 @@ app.get('/dashboard',(res,req)=>{
     port: 5432,
 
 });
-  client.connect()
-  .then(()=>{
-    return client.query('SELECT SUM(count) FROM meds; SELECT DISTINCT COUNT(brand) FROM meds');
-  })
-  .then((results)=>{
-    console.log('?results', results[0]);
-    console.log('?results', results[1]);
-  })
+client.connect()
+.then(()=>{
+  return client.query('SELECT SUM(count) FROM meds;SELECT DISTINCT COUNT(brand) FROM meds');
+})
+.then((results)=>{
+  console.log('?results',results[0]);
+  console.log('?results',results[1]);
+  res.render('dashboard',{n1:results[0].rows,n2:results[1].rows});
+})
+   
 });
+
 //Creating the route for meds and rendering the template 
 app.get('/meds',(req,res)=>{
 
