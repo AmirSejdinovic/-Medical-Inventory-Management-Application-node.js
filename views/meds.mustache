@@ -4,12 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-  <h1>This is the page which dispaly list of meds</h1>
+  
+<div class="container">
+ <div class="row">
+   <div class="col-md-12">
+     <h1>This is the page which dispaly list of meds</h1>
+   </div>
+ </div>
 
-  <table>
-  {{#rows}}
+ <div class="row">
+   <div class="col-md-12">
+     <table class="table table-striped">
+       <thead class="thead-dark">
+       <tr>
+           <th scope="col">MID</th>
+           <th scope="col">Medicine</th>
+           <th scope="col">Count</th>
+           <th scope="col">Brand</th>
+           <th scope="col">Edit</th>
+           <th scope="col">Delete</th>
+           </tr>
+       </thead>
+        {{#rows}}
     <tr>
      <td>{{mid}}</td>
      <td>{{name}}</td>
@@ -17,14 +36,20 @@
      <td>{{brand}}</td>
      <td>
        <form action="/meds/delete/{{mid}}" method="post" >
-       <button type="submit">Delete</button>
+       <button class="btn btn-danger" type="submit">Delete</button>
        </form>
      </td>
      <td>
-      <a href="/meds/edit/{{mid}}">Edit</a>
+      <a class="btn btn-success" href="/meds/edit/{{mid}}">Edit</a>
      </td>
     </tr>
   {{/rows}}
-  </table>
+
+     </table>
+     
+   </div>
+ </div>
+</div>
+  
 </body>
 </html>
